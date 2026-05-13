@@ -153,10 +153,10 @@ All outputs are saved in the `outputs/` folder.
 
 ## 👤 Author
 
-**[Your Name]**
-- LinkedIn: [linkedin.com/in/yourname](https://linkedin.com/in/yourname)
-- GitHub: [github.com/yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+**[Sushmita G H]**
+- LinkedIn: [linkedin.com/in/yourname]([https://linkedin.com/in/yourname](https://www.linkedin.com/in/sushmitagh/)
+- GitHub: [github.com/yourusername](https://github.com/sushmita-gh9)
+- Email: sushmitagh9@gmail.com
 
 ---
 
