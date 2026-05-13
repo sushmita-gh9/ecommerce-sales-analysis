@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Olist E-Commerce Sales Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --forest:       #1B4332;
+      --forest-mid:   #2D6A4F;
+      --forest-light: #40916C;
+      --forest-pale:  #D8F3DC;
+      --forest-dark:  #081C15;
+      --white:        #FFFFFF;
+      --off-white:    #F8FAF9;
+      --text:         #0D1F17;
+      --muted:        #4A6358;
+      --border:       #D0E8DA;
+    }
+
+    body {
+      background: var(--off-white);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── HERO ─────────────────────────────── */
+    .hero {
+      background: var(--forest-dark);
+      border-radius: 16px;
+      padding: 2.5rem 2.5rem 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -70px; right: -70px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: var(--forest-mid);
+      opacity: .25;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -50px; left: 200px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: var(--forest-light);
+      opacity: .12;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--forest-light);
+      color: var(--forest-pale);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: .6rem;
+      position: relative;
+    }
+    .hero p {
+      font-size: 14px;
+      color: var(--forest-pale);
+      opacity: .8;
+      position: relative;
+    }
+
+    /* ── KPI GRID ─────────────────────────── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 640px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    .kpi {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 1rem;
+    }
+    .kpi-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: var(--forest-pale);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: .75rem;
+      font-size: 17px;
+    }
+    .kpi-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: .3rem;
+    }
+    .kpi-value {
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1;
+    }
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--forest-light);
+      margin-top: .3rem;
+    }
+
+    /* ── CARDS ────────────────────────────── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: .25rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-title svg { width: 15px; height: 15px; stroke: var(--forest-light); fill: none; stroke-width: 2; stroke-linecap: round; }
+    .sub-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .85rem;
+    }
+
+    /* ── BAR ROWS ─────────────────────────── */
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+    .bar-label {
+      font-size: 12px;
+      color: var(--muted);
+      width: 140px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--forest-pale);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: var(--forest-mid);
+    }
+    .bar-val {
+      font-size: 11px;
+      color: var(--muted);
+      width: 64px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── QUARTERLY ────────────────────────── */
+    .qtr-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+    .qtr-label { font-size: 11px; color: var(--muted); width: 60px; flex-shrink: 0; }
+    .qtr-track { flex: 1; height: 9px; background: var(--forest-pale); border-radius: 5px; overflow: hidden; }
+    .qtr-fill  { height: 100%; border-radius: 5px; background: var(--forest-mid); }
+    .qtr-val   { font-size: 11px; color: var(--muted); width: 54px; text-align: right; flex-shrink: 0; }
+    .badge {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      width: 52px;
+      text-align: center;
+    }
+    .badge-up   { background: #D8F3DC; color: var(--forest-mid); }
+    .badge-down { background: #FDECEA; color: #A93226; }
+
+    /* ── PAYMENT ──────────────────────────── */
+    .pay-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .pay-label { font-size: 12px; color: var(--text); width: 100px; flex-shrink: 0; }
+    .pay-track { flex: 1; height: 10px; background: var(--forest-pale); border-radius: 5px; overflow: hidden; }
+    .pay-fill  { height: 100%; border-radius: 5px; }
+    .pay-pct   { font-size: 11px; color: var(--muted); width: 32px; text-align: right; }
+
+    /* ── SEGMENTS ─────────────────────────── */
+    .seg-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid #EEF5F0;
+    }
+    .seg-row:last-child { border-bottom: none; }
+    .seg-dot  { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .seg-name { font-size: 12px; color: var(--text); flex: 1; }
+    .seg-count{ font-size: 12px; color: var(--muted); margin-right: 8px; }
+    .seg-ltv  { font-size: 12px; font-weight: 500; color: var(--forest-mid); }
+
+    /* ── REVIEWS ──────────────────────────── */
+    .rev-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .rev-star { font-size: 12px; color: var(--muted); width: 26px; flex-shrink: 0; }
+    .rev-track{ flex: 1; height: 8px; background: var(--forest-pale); border-radius: 4px; overflow: hidden; }
+    .rev-fill { height: 100%; border-radius: 4px; }
+    .rev-pct  { font-size: 11px; color: var(--muted); width: 36px; text-align: right; }
+
+    /* ── INSIGHTS ─────────────────────────── */
+    .insights-title {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .85rem;
+    }
+    .insight-card {
+      background: var(--forest);
+      border-radius: 12px;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: .75rem;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .insight-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--forest-light);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 24px;
+    }
+    .insight-text {
+      font-size: 13px;
+      color: var(--forest-pale);
+      line-height: 1.65;
+    }
+    .insight-text strong { color: var(--white); font-weight: 500; }
+
+    /* ── FOOTER ───────────────────────────── */
+    .footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .footer span { color: var(--forest-light); font-weight: 500; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Data Analysis Project</div>
+    <h1>Olist E-Commerce<br>Sales Analysis</h1>
+    <p>Brazilian E-Commerce Dataset &nbsp;·&nbsp; 2016–2018 &nbsp;·&nbsp; 110,197 transactions</p>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-icon">🛒</div>
+      <div class="kpi-label">Total Orders</div>
+      <div class="kpi-value">96,478</div>
+      <div class="kpi-sub">Delivered orders only</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-value">R$13.2M</div>
+      <div class="kpi-sub">BRL, 2016–2018</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-icon">👥</div>
+      <div class="kpi-label">Unique Customers</div>
+      <div class="kpi-value">93,358</div>
+      <div class="kpi-sub">97% one-time buyers</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-icon">⭐</div>
+      <div class="kpi-label">Avg Review Score</div>
+      <div class="kpi-value">4.08 / 5</div>
+      <div class="kpi-sub">57.6% five-star</div>
+    </div>
+  </div>
+
+  <!-- ROW 1: Categories + States -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Top product categories
+      </div>
+      <div class="sub-label">by revenue (BRL)</div>
+      <div id="cats"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Revenue by state
+      </div>
+      <div class="sub-label">top 5 states</div>
+      <div id="states"></div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Quarterly + Payments -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        Quarterly revenue growth
+      </div>
+      <div class="sub-label" style="margin-bottom:.85rem">QoQ change</div>
+      <div id="qtrs"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        Payment methods
+      </div>
+      <div class="sub-label" style="margin-bottom:.85rem">share of orders</div>
+      <div id="pays"></div>
+    </div>
+  </div>
+
+  <!-- ROW 3: Segments + Reviews -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Customer segments
+      </div>
+      <div id="segs"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Review score distribution
+      </div>
+      <div id="revs" style="margin-top:.5rem"></div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="insights-title">Key business insights &amp; recommendations</div>
+
+  <div class="insight-card">
+    <div class="insight-num">1</div>
+    <div class="insight-text"><strong>Revenue concentration</strong> — São Paulo (SP) alone drives R$5.1M, 38% of total revenue. Other states are significantly underpenetrated and represent a clear geographic expansion opportunity.</div>
+  </div>
+  <div class="insight-card">
+    <div class="insight-num">2</div>
+    <div class="insight-text"><strong>One-time buyer problem</strong> — 97% of customers purchase only once. Loyal customers (4+ orders) spend <strong>4.8× more</strong> on average. Email retention campaigns and loyalty programs are a high-ROI opportunity.</div>
+  </div>
+  <div class="insight-card">
+    <div class="insight-num">3</div>
+    <div class="insight-text"><strong>Credit card dominance</strong> — 79% of revenue flows through credit cards with an average of 3.7 installments, signaling price sensitivity and opportunity for EMI promotions on high-ticket categories.</div>
+  </div>
+  <div class="insight-card">
+    <div class="insight-num">4</div>
+    <div class="insight-text"><strong>Strong satisfaction signal</strong> — 57.6% five-star reviews and an average score of 4.08/5 confirms strong product–market fit. Investigating the 11.4% one-star reviews could unlock further retention gains.</div>
+  </div>
+  <div class="insight-card">
+    <div class="insight-num">5</div>
+    <div class="insight-text"><strong>Seasonal spike in May</strong> — R$1.47M peak revenue, likely tied to Brazilian holidays. Inventory and marketing should be prepared 3–4 weeks prior to fully capture seasonal demand.</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Built with <span>Python · Pandas · SQLite · Matplotlib · Seaborn</span>
+    &nbsp;·&nbsp; Dataset: Brazilian E-Commerce by Olist (Kaggle)
+  </div>
+
+</div>
+
+<script>
+  const cats = [
+    {label:'Health & Beauty',    val:1233132},
+    {label:'Watches & Gifts',    val:1166177},
+    {label:'Bed, Bath & Table',  val:1023435},
+    {label:'Sports & Leisure',   val:954853},
+    {label:'Computers & Acc.',   val:888725},
+  ];
+  const maxCat = cats[0].val;
+  cats.forEach(c => {
+    const pct = Math.round(c.val / maxCat * 100);
+    document.getElementById('cats').innerHTML += `
+      <div class="bar-row">
+        <span class="bar-label">${c.label}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <span class="bar-val">R$${(c.val/1e6).toFixed(2)}M</span>
+      </div>`;
+  });
+
+  const states = [
+    {label:'São Paulo (SP)',          val:5067633},
+    {label:'Rio de Janeiro (RJ)',     val:1759651},
+    {label:'Minas Gerais (MG)',       val:1552482},
+    {label:'Rio Grande do Sul (RS)',  val:728897},
+    {label:'Paraná (PR)',             val:666064},
+  ];
+  const maxSt = states[0].val;
+  states.forEach(s => {
+    const pct = Math.round(s.val / maxSt * 100);
+    document.getElementById('states').innerHTML += `
+      <div class="bar-row">
+        <span class="bar-label">${s.label}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <span class="bar-val">R$${(s.val/1e6).toFixed(1)}M</span>
+      </div>`;
+  });
+
+  const qtrs = [
+    {label:'2017 Q1', val:705221,  chg: null},
+    {label:'2017 Q2', val:1251931, chg:'+77.5%'},
+    {label:'2017 Q3', val:1643704, chg:'+31.3%'},
+    {label:'2017 Q4', val:2362046, chg:'+43.7%'},
+    {label:'2018 Q1', val:2704438, chg:'+14.5%'},
+    {label:'2018 Q2', val:2807157, chg:'+3.8%'},
+    {label:'2018 Q3', val:1706530, chg:'-39.2%'},
+  ];
+  const maxQ = Math.max(...qtrs.map(q => q.val));
+  qtrs.forEach(q => {
+    const pct = Math.round(q.val / maxQ * 100);
+    const badge = q.chg
+      ? `<span class="badge ${q.chg.startsWith('-') ? 'badge-down' : 'badge-up'}">${q.chg}</span>`
+      : `<span style="width:52px;display:inline-block"></span>`;
+    document.getElementById('qtrs').innerHTML += `
+      <div class="qtr-row">
+        <span class="qtr-label">${q.label}</span>
+        <div class="qtr-track"><div class="qtr-fill" style="width:${pct}%"></div></div>
+        <span class="qtr-val">R$${(q.val/1e6).toFixed(1)}M</span>
+        ${badge}
+      </div>`;
+  });
+
+  const pays = [
+    {label:'Credit card', pct:79, color:'#1B4332'},
+    {label:'Boleto',      pct:17, color:'#2D6A4F'},
+    {label:'Voucher',     pct: 2, color:'#74C69D'},
+    {label:'Debit card',  pct: 1, color:'#B7E4C7'},
+  ];
+  pays.forEach(p => {
+    document.getElementById('pays').innerHTML += `
+      <div class="pay-row">
+        <span class="pay-label">${p.label}</span>
+        <div class="pay-track"><div class="pay-fill" style="width:${p.pct}%;background:${p.color}"></div></div>
+        <span class="pay-pct">${p.pct}%</span>
+      </div>`;
+  });
+
+  const segs = [
+    {name:'One-time buyers',       count:'90,557', ltv:'R$138',  color:'#40916C'},
+    {name:'Repeat buyers (2–3×)',  count:'2,754',  ltv:'R$253',  color:'#2D6A4F'},
+    {name:'Loyal customers (4+)',  count:'47',     ltv:'R$663',  color:'#1B4332'},
+  ];
+  segs.forEach(s => {
+    document.getElementById('segs').innerHTML += `
+      <div class="seg-row">
+        <span class="seg-dot" style="background:${s.color}"></span>
+        <span class="seg-name">${s.name}</span>
+        <span class="seg-count">${s.count}</span>
+        <span class="seg-ltv">Avg LTV ${s.ltv}</span>
+      </div>`;
+  });
+
+  const revs = [
+    {star:'5★', pct:57.6, color:'#1B4332'},
+    {star:'4★', pct:19.3, color:'#2D6A4F'},
+    {star:'3★', pct: 8.4, color:'#40916C'},
+    {star:'2★', pct: 3.4, color:'#74C69D'},
+    {star:'1★', pct:11.4, color:'#C0392B'},
+  ];
+  revs.forEach(r => {
+    document.getElementById('revs').innerHTML += `
+      <div class="rev-row">
+        <span class="rev-star">${r.star}</span>
+        <div class="rev-track"><div class="rev-fill" style="width:${r.pct}%;background:${r.color}"></div></div>
+        <span class="rev-pct">${r.pct}%</span>
+      </div>`;
+  });
+</script>
+</body>
+</html>

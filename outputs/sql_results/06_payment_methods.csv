@@ -1,0 +1,6 @@
+payment_type,total_orders,total_revenue,avg_installments
+credit_card,73104,10432144.17,3.7
+boleto,19191,2329807.64,1.0
+voucher,2698,281542.87,1.5
+debit_card,1484,177868.46,1.0
+,1,134.97,

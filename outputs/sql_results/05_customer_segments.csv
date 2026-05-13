@@ -1,0 +1,4 @@
+customer_segment,num_customers,avg_lifetime_value,segment_revenue
+1 - One-Time Buyer,90557,137.96,12493089.36
+2 - Repeat Buyer (2-3x),2754,253.18,697249.32
+3 - Loyal Customer (4+),47,662.97,31159.43
